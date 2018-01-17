@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <HeaderComponent></HeaderComponent>
-    <router-view/>    
+    <HeaderComponent :searchQuery="searchQueryValue" ></HeaderComponent>
+    <router-view />    
   </div>
 </template>
 
@@ -14,7 +14,12 @@ export default {
   },
   data () {
     return {
-
+      searchQ:''
+    }
+  },
+  methods: {
+    searchQueryValue(data) {
+      this.searchQ = data
     }
   }
 }

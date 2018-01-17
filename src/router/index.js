@@ -6,6 +6,8 @@ import SongList from '@/pages/SongList'
 import AnchorRadio from '@/pages/AnchorRadio'
 import Singer from '@/pages/Singer'
 import NewAlbum from '@/pages/NewAlbum'
+import Search from '@/pages/Search'
+import Artist from '@/pages/Artist'
 
 Vue.use(Router)
 
@@ -44,6 +46,16 @@ export default new Router({
       path: '/newAlbum',
       name: 'newAlbum',
       component: NewAlbum
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
+    },
+    {
+      path: '/artist',
+      name: 'artist',
+      component: Artist
     }
   ]
 })
