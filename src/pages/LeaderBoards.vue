@@ -1,5 +1,5 @@
 <template>
-    <div id="LeaderBoards">
+    <div id="LeaderBoards" class="area">
         {{title}}
     </div>
 </template>

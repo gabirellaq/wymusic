@@ -1,5 +1,5 @@
 <template>
-    <div id="Singer">
+    <div id="Singer" class="area">
         {{title}}
     </div>
 </template>

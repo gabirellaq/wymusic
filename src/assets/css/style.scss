@@ -1,0 +1,265 @@
+/**common styles**/
+
+*{
+	box-sizing:border-box;
+}
+html{
+  /*font-size: 37.5px; *//* 解决UC浏览，rem适配问题 https://www.cnblogs.com/chenrong/articles/4686601.html */
+}
+html,body{
+    width: 100%;
+    min-height: 100%;
+    touch-action: manipulation; /* IE11+ 禁止双击缩放，关于移动端300ms延迟：https://github.com/ftlabs/fastclick */  
+    -ms-touch-action: manipulation; /* IE10+ 禁止双击缩放 */
+}
+body{
+    font-family: Microsoft YaHei,STHeiti,Helvetica,Arial,sans-serif;
+    overflow-y: initial !important; /* music-ui的自带样式会导致body出现滚动条，然后导致scrollBehavior无法获取window的滚动位置 */
+}
+img{vertical-align: top;border: 0;}
+ul, li, ol{
+    list-style-type: none;
+}
+a, blockquote, body, button, code, dd, div, dl, dt, em, fieldset, form, h1, h2, h3, h4, h5, h6, html,iframe, img, input, label, li, object, ol, p, q, small, span, strong, table, tbody, td, th, tr, ul {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+h1, h2, h3, h4, h5, h6{
+    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+
+button, input, select, textarea { font-size: 100%; line-height:normal; }
+button, input, select, label{vertical-align:middle;}
+table{ border-collapse: collapse; border-spacing: 0; }
+input[type="button"],input[type="submit"],input[type="reset"]{cursor:pointer;}
+a{color: #333; outline: none; text-decoration: none;}
+a:focus{outline: none;}
+.clearfix:after {visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0;}
+.clearfix {zoom:1; }
+em{
+    font-style: normal;
+}
+
+$grey:#eee;
+$font-detail-color:#999;
+$font-color:#666;
+$red:#c20c0c;
+$white:#fff;
+$body-color:#f5f5f5;
+$font-size:14px;
+$border-area-color:#d3d3d3;
+
+body {
+    font-size:$font-size;
+    color:$font-color;
+    background: $body-color;
+}
+
+#Search{
+    margin:20px 5%;
+    color:$font-color;
+    font-size:$font-size - 2;
+}
+.snote {
+    color:$font-detail-color;        
+    .red {
+        color:$red;
+    }
+}
+.searchList{
+    padding:10px 0;        
+    li{
+        display: flex;
+        padding:10px 20px;
+        align-items: center;
+        &:nth-child(even) {
+            background:$grey;
+        }
+        span {
+            &.name {
+                flex:2;
+                i {
+                    font-style:normal;
+                    display:block;
+                    line-height:20px;
+                    &.des{
+                        color:$font-detail-color;
+                    }
+                }
+            }
+            flex: 1;
+            text-align:left;
+            &:last-child {
+                flex:.5;
+                text-align:right;
+            }
+        }
+    }
+}
+.searchsingerList {
+    display:flex;
+    flex-wrap:wrap;
+    li {
+        width:130px;
+        display:block;
+        margin:10px;
+        a {
+            display:block;
+            color:$font-color;
+        }
+        img {
+            width:130px;
+            height:130px;
+            border:1px solid $grey;
+        }
+        p {
+            text-overflow:ellipsis;
+            overflow:hidden;
+            white-space: nowrap;
+            margin-top:5px;
+        }
+    }
+}
+.albumList {        
+    li {
+        position:relative;
+        width:153px;
+        .msk {
+            background:url('~@/assets/images/coverall.png') no-repeat 0 -845px;
+            position:absolute;
+            width:100%;
+            height:130px;
+            left:0px;
+            top:0px;
+        }
+    }
+}
+.mvList {
+    li {
+        width:160px;
+        .mvcover {
+            position:relative;
+            width:100%;
+            height:90px;
+            display:block;
+            img{
+                width:100%;
+                height:90px;
+            }
+            .duration,
+            .playcount{
+                position:absolute;
+            }
+            .duration{                    
+                left:5px;
+                bottom:5px;                    
+            }
+            .playcount {
+                right: 5px;
+                top: 5px;
+                &:before {
+                    background:url('~@/assets/images/icon2.png') no-repeat -60px -310px;
+                    content:'';
+                    width: 15px;
+                    height: 10px;
+                    position: absolute;
+                    left: -18px;
+                    top: 3px;
+                }
+            }
+        }
+    }
+}
+.lyricList {
+    margin:10px 0;
+    .lyricDes {
+        display:flex;
+        padding:10px;
+        border:1px solid transparent;
+        background:$grey;
+        border-color:darken($grey,5%);
+        > span {
+            flex:auto;
+            &:first-child {
+                position:relative;
+                padding-left:25px;
+                &:before {
+                    content:'';
+                    background:url('~@/assets/images/table.png') no-repeat 0 -103px;
+                    width:17px;
+                    height:17px;
+                    position:absolute;
+                    left:0px;
+                }
+            }
+            &:last-child {
+                text-align:right;
+            }
+        }
+    }
+    .lyrics {
+        padding:10px;
+        display:block;
+        margin-left:50px;
+        > span {
+            display:block;
+        }
+        .lyricstext {
+            &.collapse {
+                max-height:85px;
+                overflow:hidden;
+            }
+            p {
+                line-height:20px;
+            }
+        }
+        .crl {
+            margin-top:10px;
+            cursor:pointer;
+        }
+    }
+}
+.songsList {
+    li {
+        align-items: center;
+        img {
+            width:50px;
+            height:50px;
+            margin-right:10px;
+        }
+    }
+}
+.audioList {
+    img {
+        width:150px;
+        height:150px;
+    }
+    img,p {
+        display:block;
+    }
+}
+.userList {
+    img {
+        width:50px;
+        height:50px;
+        margin-right:10px;
+    }
+}
+
+
+.area {
+    width: 980px;
+    margin:auto;
+    background: $white;
+    border-color:$border-area-color;
+    border-width:0 1px;
+    border-style: solid;
+}
+
+@media screen and (max-width:768px) {
+    .area {
+        width: 100%;
+        border:0;
+    }
+}

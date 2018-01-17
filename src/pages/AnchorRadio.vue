@@ -1,5 +1,5 @@
 <template>
-    <div id="AnchorRadio">
+    <div id="AnchorRadio" class="area">
         {{title}}
     </div>
 </template>

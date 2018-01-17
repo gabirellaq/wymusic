@@ -1,5 +1,5 @@
 <template>
-    <div id="NewAlbum">
+    <div id="NewAlbum" class="area">
         {{title}}
     </div>
 </template>

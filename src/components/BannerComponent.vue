@@ -1,28 +1,26 @@
 <template>
     <div id="BannerComponent">
         <swiper :options="swiperOption">
-            <swiper-slide>Slide 1</swiper-slide>
-            <swiper-slide>Slide 2</swiper-slide>
-            <swiper-slide>Slide 3</swiper-slide>
-            <swiper-slide>Slide 4</swiper-slide>
-            <swiper-slide>Slide 5</swiper-slide>
-            <swiper-slide>Slide 6</swiper-slide>
-            <swiper-slide>Slide 7</swiper-slide>
-            <swiper-slide>Slide 8</swiper-slide>
-            <swiper-slide>Slide 9</swiper-slide>
-            <swiper-slide>Slide 10</swiper-slide>
+            <swiper-slide v-for="(item,index) in toBanner" :key="index">
+                <img :src="item.pic | filterImg">
+            </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
+            <div class="swiper-button-prev" slot="button-prev"></div>
+            <div class="swiper-button-next" slot="button-next"></div>
         </swiper>
     </div>
 </template>
 <script>
+    import filter from '../filter.js'
     export default {
         name:"BannerComponent",
+        props:['toBanner'],
         data () {
             return {
                 swiperOption: {
                     slidesPerView: 1,
                     spaceBetween: 30,
+                    autoplay:true,
                     loop: true,
                     pagination: {
                         el: '.swiper-pagination',
@@ -47,15 +45,15 @@
 $banner_height: 336px;
 #BannerComponent{
     width: 100%;
-    padding: 10px;
     height: $banner_height;
     background-color: #e8e8e8;
     .swiper-container{
         width: 100%;
         height: 100%;
         .swiper-slide{
+            text-align:center;
             img{
-                width: 100%;
+                width: auto;
                 height: auto
             }
         }
