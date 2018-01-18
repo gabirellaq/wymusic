@@ -2,11 +2,11 @@
     <div id="Search">
         <el-tabs v-model="SearchModel" type="border-card" @tab-click="handleClick">
             <el-tab-pane v-for="(item, index) in tabList" :key="index" :label="item.label" :name="item.name" :type="item.type">
-                <p class="snote">搜索“{{queryStr}}”，找到 <span class="red">{{item.searchResultCount}}</span> 首 {{item.label}}</p>
+                <p class="snote">搜索“{{keywords}}”，找到 <span class="red">{{item.searchResultCount}}</span> 首 {{item.label}}</p>
                 <div v-if="item.type == 1">   
                     <!--单曲-->                                  
-                    <ul class="searchList">
-                        <li v-if="item.searchResult !== ''" v-for="(itemx,idx) in item.searchResult" :key="idx">
+                    <ul class="searchList" v-if="item.searchResult.length > 0">
+                        <li v-for="(itemx,idx) in item.searchResult" :key="idx">
                             <span class="name">{{itemx.name}}</span>
                             <span>{{itemx.artists[0].name}}</span>
                             <span>{{itemx.album.name}}</span>
@@ -24,8 +24,8 @@
                 </div>
                 <div v-if="item.type == 1004">
                     <!--视频-->
-                    <ul class="searchsingerList mvList">
-                        <li v-if="item.searchResult !== ''" v-for="(itemx,idx) in item.searchResult" :key="idx">
+                    <ul class="searchsingerList mvList" v-if="item.searchResult.length > 0">
+                        <li v-for="(itemx,idx) in item.searchResult" :key="idx">
                             <span class="mvcover">
                                 <img :src="itemx.cover|filterImg" />
                                 <span class="playcount">{{itemx.playCount | transformNumber}}</span>  
@@ -38,8 +38,8 @@
                 </div>
                 <div v-if="item.type == 1006">
                     <!--歌词-->
-                    <ul class="lyricList">
-                        <li v-if="item.searchResult !== ''" v-for="(itemx,idx) in item.searchResult" :key="idx">
+                    <ul class="lyricList" v-if="item.searchResult.length > 0">
+                        <li v-for="(itemx,idx) in item.searchResult" :key="idx">
                             <span class="lyricDes">
                                 <span>{{itemx.name}}</span>
                                 <span>{{itemx.artists[0].name}}</span>
@@ -64,8 +64,8 @@
                 </div>
                 <div v-if="item.type == 1009">
                     <!--电台-->
-                    <ul class="searchsingerList audioList">
-                        <li v-if="item.searchResult !== ''" v-for="(itemx,idx) in item.searchResult" :key="idx">
+                    <ul class="searchsingerList audioList" v-if="item.searchResult.length > 0" >
+                        <li v-for="(itemx,idx) in item.searchResult" :key="idx">
                             <img :src="itemx.dj.avatarUrl">
                             <p>{{itemx.name}}</p>
                             <p>by {{itemx.dj.nickname}}</p>
@@ -74,8 +74,8 @@
                 </div>
                 <div v-if="item.type == 1002">
                     <!--用户-->
-                    <ul class="searchList userList">
-                        <li v-if="item.searchResult !== ''" v-for="(itemx,idx) in item.searchResult" :key="idx">
+                    <ul class="searchList userList" v-if="item.searchResult.length > 0" >
+                        <li v-for="(itemx,idx) in item.searchResult" :key="idx">
                             <img :src="itemx.avatarUrl">
                             <span class="name">
                                 <i>{{itemx.nickname}}</i>
@@ -92,7 +92,7 @@
     </div>
 </template>
 <script>
-    import axios from 'axios';
+    import { mapMutations, mapActions } from 'vuex';
     import SingersComponent from '@/components/SingersComponent'
     import AlbumComponent from '@/components/AlbumComponent'
     import SongsComponent from '@/components/SongsComponent'    
@@ -108,6 +108,7 @@
             return {
                 title: '搜索',
                 SearchModel:'single',
+                keywords:'',
                 isCollapse:true,
                 type:1, // type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲 10: 专辑 100: 歌手 1000: 歌单 1002: 用户 1004: MV 1006: 歌词 1009: 电台
                 tabList: [
@@ -164,58 +165,67 @@
             }
         },
         methods: {
-            query(q, type) {
-                axios.get('http://localhost:3000/search?keywords='+q+'&type='+type)
-                    .then(request=>{
-                        this.searchResult = ''
-                        this.searchResultCount = ''
-                        if(type === 1){//单曲 
-                            this.tabList[0].searchResult = request.data.result.songs
-                            this.tabList[0].searchResultCount = request.data.result.songCount
-                        }else if(type === 100){//歌手
-                            this.tabList[1].searchResult = request.data.result.artists
-                            this.tabList[1].searchResultCount = request.data.result.artistCount
-                        }else if(type === 10){//专辑
-                            this.tabList[2].searchResult = request.data.result.albums
-                            this.tabList[2].searchResultCount = request.data.result.albumCount
-                        }else if(type===1004){//视频
-                            this.tabList[3].searchResult = request.data.result.mvs
-                            this.tabList[3].searchResultCount = request.data.result.mvCount
-                        }else if(type===1006){//歌词
-                            this.tabList[4].searchResult = request.data.result.songs
-                            this.tabList[4].searchResultCount = request.data.result.songCount
-                        }else if(type===1000) {//歌单
-                            this.tabList[5].searchResult = request.data.result.playlists
-                            this.tabList[5].searchResultCount = request.data.result.playlistCount
-                        }else if(type===1009){//主播电台
-                            this.tabList[6].searchResult = request.data.result.djRadios
-                            this.tabList[6].searchResultCount = request.data.result.djRadiosCount
-                        }else if(type===1002){//用户
-                            this.tabList[7].searchResult = request.data.result.userprofiles
-                            this.tabList[7].searchResultCount = request.data.result.userprofileCount
-                        }
-                    }).catch(err=>{
-                        console.log(err)
+            ...mapActions([
+                'getSearchData'
+            ]),
+            query(keywords, type, limit) {
+                this.getSearchData({'keywords':keywords, 'type':type, 'limit':limit})
+                    .then(request => {
+                        switch(type) {
+                            case 1: //单曲
+                                this.tabList[0].searchResult = request.result.songs;
+                                this.tabList[0].searchResultCount = request.result.songCount;
+                                break;
+                            case 100: //歌手
+                                this.tabList[1].searchResult = request.result.artists;
+                                this.tabList[1].searchResultCount = request.result.artistCount;
+                                break;
+                            case 10: //专辑
+                                this.tabList[2].searchResult = request.result.albums;
+                                this.tabList[2].searchResultCount = request.result.albumCount;
+                                break;
+                            case 1004: //视频
+                                this.tabList[3].searchResult = request.result.mvs;
+                                this.tabList[3].searchResultCount = request.result.mvCount;
+                                break;
+                            case 1006: //歌词
+                                this.tabList[4].searchResult = request.result.songs;
+                                this.tabList[4].searchResultCount = request.result.songCount;
+                                break;
+                            case 1000: //歌单
+                                this.tabList[5].searchResult = request.result.playlists;
+                                this.tabList[5].searchResultCount = request.result.playlistCount;
+                                break;
+                            case 1009: //主播电台
+                                this.tabList[6].searchResult = request.result.djRadios;
+                                this.tabList[6].searchResultCount = request.result.djRadiosCount;
+                                break;
+                            case 1002: //用户
+                                this.tabList[7].searchResult = request.result.userprofiles;
+                                this.tabList[7].searchResultCount = request.result.userprofileCount;
+                                break;
+                        }   
+                    }).catch(err => {
+                        console.log("query:", err)
                     })
             },
             handleClick (tab, event) {
-                this.type = tab.$attrs.type
-                this.query(this.queryStr, this.type);
+                this.type = tab.$attrs.type;
+                this.query(this.keywords, this.type);
             },
             collapse() {
                 this.isCollapse = !this.isCollapse
+            },
+            init() {
+                this.keywords = this.$route.query.q;
+                if(this.keywords!==""){
+                   this.query(this.keywords, this.type);
+                }
             }
         },
-        computed: {
-            queryStr(){
-                let q = this.$route.query.q
-                if(q!==""){
-                   this.query(q, this.type);
-                }
-                return q;           
-            },
-            
-        },
+        mounted() {
+            this.init();
+        }
     }
 </script>
 

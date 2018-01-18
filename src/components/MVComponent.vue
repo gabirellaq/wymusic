@@ -1,9 +1,11 @@
 <template>
-    <div id="AlbumComponent">
-        <ul class="searchsingerList albumList" v-if="albumData" >
-            <li v-for="(itemx,idx) in albumData" :key="idx">
-                <img :src="itemx.picUrl | filterImg"  />   
-                <span class="msk"></span>         
+    <div id="MVComponent">
+        <ul class="searchsingerList mvsList" v-if="mvData" >
+            <li v-for="(itemx,idx) in mvData" :key="idx">
+                <div class="mvv">
+                    <img :src="itemx.imgurl | filterImg"  />   
+                    <span class="iconplay"></span>   
+                </div>
                 <p>{{itemx.name}}</p>
                 <p class="artistName">{{itemx.artist.name}}</p>
             </li>
@@ -13,8 +15,8 @@
 <script>
     import filter from '../filter.js'
     export default {
-        name:"AlbumComponent",
-        props:['albumData'],
+        name:"MVComponent",
+        props:['mvData'],
         data () {
             return {
                 

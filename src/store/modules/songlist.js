@@ -15,7 +15,7 @@ export default {
         async getSongsData ({commit}, orders) {
             let res = await axiosRq('GET', 'top/playlist', {order:orders})
             if(res.data) {
-                commit('GETSONGS',response.data);
+                commit('GETSONGS',res.data);
             }
             return res
         }

@@ -15,7 +15,7 @@ export default {
         async getBannerData ({commit}) {
             let res = await axiosRq('GET', `banner`)
             if(res.data) {
-                commit('GETBANNER',response.data);
+                commit('GETBANNER',res.data);
             }
             return res
         }

@@ -1,7 +1,7 @@
 <template>
     <div id="SongsComponent">
-        <ul class="searchList songsList">
-            <li v-if="songsData !== ''" v-for="(itemx,idx) in songsData" :key="idx">
+        <ul class="searchList songsList" v-if="songsData.length>0" >
+            <li v-for="(itemx,idx) in songsData" :key="idx">
                 <img :src="itemx.coverImgUrl" class="pic">
                 <span class="name">{{itemx.name}}</span>
                 <span class="count">{{itemx.trackCount}}首</span>

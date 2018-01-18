@@ -77,6 +77,9 @@ body {
             background:$grey;
         }
         span {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             &.name {
                 flex:2;
                 i {
@@ -132,6 +135,9 @@ body {
             height:130px;
             left:0px;
             top:0px;
+        }
+        .albumTime {
+            display: none;
         }
     }
 }
@@ -244,6 +250,25 @@ body {
         width:50px;
         height:50px;
         margin-right:10px;
+    }
+}
+.mvsList {
+    li {
+        div.mvv{
+            position:relative;
+            img{
+                height:103px;
+            }
+            .iconplay {
+                position: absolute;
+                width: 44px;
+                height: 44px;
+                top: 50%;
+                left: 50%;
+                margin: -22px 0 0 -22px;
+                background: url('~@/assets/images/iconall.png') no-repeat -30px -135px;
+            }
+        }
     }
 }
 
