@@ -12,7 +12,7 @@
                             <ul class="searchList">
                                 <li v-for="(i,idx) in songsJson.hotSongs" :key="idx">
                                     <span class="name">{{i.name}}<b v-if="i.alia.length>0">-{{i.alia[0]}}</b></span>
-                                    <span>{{i.dt | transformDate}}</span>
+                                    <span>{{i.dt | transformTime}}</span>
                                     <span>{{i.al.name}}</span>
                                 </li>
                             </ul>
@@ -179,9 +179,7 @@
     }
 </script>
 <style lang="scss">
-$grey:#eee;
-$red:#c20c0c;
-$font-size:14px;
+@import "../assets/css/variables.scss";
 .artistbox {
     display: flex;
     .colright{

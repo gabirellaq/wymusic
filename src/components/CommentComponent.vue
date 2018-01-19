@@ -1,0 +1,64 @@
+<template>
+    <div id="CommentComponent" class="comments" v-if="commentData">
+        <div class="commentTitle">精彩评论</div>
+        <ul>
+            <li v-for="(i,index) in commentData.hotComments" :key="index">
+                <img v-if="i.user.avatarUrl !== null" :src=" i.user.avatarUrl | filterImg">
+                <img v-else src="http://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg">  
+                <div class="b">
+                    <span class="name">{{i.user.nickname}}:</span>
+                    <span class="c">{{i.content}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</template>
+<script>
+    import filter from '../filter.js'
+    export default {
+        name:"CommentComponent",
+        title:"精彩评论",
+        props:['commentData'],
+        data () {
+            return {
+                
+            }
+        },
+        computed:{
+    
+        },
+        methods: {
+            
+        }
+    }
+</script>
+<style lang="scss">
+@import "../assets/css/variables.scss";
+.comments {
+    font-size: $font-size - 2;
+    margin-top: 20px;
+    .commentTitle {
+        padding:5px 0;
+        border-bottom: 1px solid $grey;
+        font-size: $font-size + 4;
+    }
+    ul {
+        li {
+            display: flex;
+            padding:20px 0;
+            border-bottom:1px dashed darken($grey,15%);
+            img {
+                width:50px;
+                height:50px;
+                margin-right: 10px;
+            }
+            .b {
+                flex:1;
+                .name {
+                    color:$blue;
+                }
+            }
+        }
+    }
+}
+</style>

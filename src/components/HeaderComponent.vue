@@ -73,9 +73,7 @@
     }
 </script>
 <style lang="scss">
-$red:#C20C0C;
-$white:#fff;
-$black:#242424;
+@import "../assets/css/variables.scss";
 .m-subnav {
     z-index: 90;
     box-sizing: border-box;

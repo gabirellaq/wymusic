@@ -53,10 +53,7 @@
     }
 </script>
 <style lang="scss">
-$grey:#eee;
-$font-detail-color:#999;
-$font-size:14px;
-$red:#c20c0c;
+@import "../assets/css/variables.scss";
 .songTitle{
     margin: 0 27px;
     padding: 15px 0;
@@ -66,45 +63,6 @@ $red:#c20c0c;
     .choose {
         flex:auto;
         margin:0 10px;
-    }
-}
-.songlistcomponent {
-    ul {
-        display: flex;
-        flex-wrap: wrap;
-        li {
-            display:block;
-            padding:0;
-            margin:10px 27px;
-            width:140px;
-            > * {
-                display:block;
-                line-height:20px;
-            }
-            &:nth-child(even) {
-                background:none;
-            }
-            .pic {
-                width:100%;
-                height:140px;
-                border:1px solid $grey;
-                margin-bottom:5px;
-            }
-            .name {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            .nickname {
-                font-size:$font-size - 2;
-                color:$font-detail-color;
-            }
-            .count,
-            .bookcount,
-            .playcount {
-                display:none;
-            }
-        }
     }
 }
 </style>

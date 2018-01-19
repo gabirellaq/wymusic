@@ -10,7 +10,7 @@
                             <span class="name">{{itemx.name}}</span>
                             <span>{{itemx.artists[0].name}}</span>
                             <span>{{itemx.album.name}}</span>
-                            <span>{{itemx.duration | transformDate}}</span>
+                            <span>{{itemx.duration | transformTime}}</span>
                         </li>
                     </ul>
                 </div>
@@ -29,7 +29,7 @@
                             <span class="mvcover">
                                 <img :src="itemx.cover|filterImg" />
                                 <span class="playcount">{{itemx.playCount | transformNumber}}</span>  
-                                <span class="duration">{{itemx.duration | transformDate}}</span>    
+                                <span class="duration">{{itemx.duration | transformTime}}</span>    
                             </span>       
                             <p>{{itemx.name}}</p>
                             <p>{{itemx.artistName}}</p>                            
@@ -44,7 +44,7 @@
                                 <span>{{itemx.name}}</span>
                                 <span>{{itemx.artists[0].name}}</span>
                                 <span>《{{itemx.album.name}}》</span>
-                                <span>{{itemx.duration | transformDate}}</span>
+                                <span>{{itemx.duration | transformTime}}</span>
                             </span>
                             <span class="lyrics">
                                 <span :class="{collapse:isCollapse}" class="lyricstext">

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-Vue.filter('transformDate', (value)=>{
+Vue.filter('transformTime', (value)=>{
     if(!value) return ''
     let date = new Date(value)
     let time
