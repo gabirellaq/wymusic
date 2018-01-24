@@ -13,9 +13,11 @@
                     <div class="wrapcontent songlistcomponent" >
                         <ul class="songsList" v-if="recommendSongJson">
                             <li v-for="(itemx,idx) in recommendSongJson.result" :key="idx">
-                                <img :src="itemx.picUrl" class="pic">
-                                <span>{{itemx.copywriter}}</span>
-                                <span class="name">{{itemx.name}}</span>                            
+                                <router-link :to="`/songDetail?id=${itemx.id}`">
+                                    <img :src="itemx.picUrl" class="pic">
+                                    <span>{{itemx.copywriter}}</span>
+                                    <span class="name">{{itemx.name}}</span>                            
+                                </router-link>
                             </li>
                         </ul>
                     </div>
@@ -135,6 +137,11 @@
     }
     .albumList li {
         margin-right: 17px;
+    }
+    .songsList li {
+        span {
+            display: block;
+        }
     }
 }
 </style>

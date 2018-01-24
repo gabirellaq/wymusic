@@ -7,7 +7,7 @@
                     <!--单曲-->                                  
                     <ul class="searchList" v-if="item.searchResult.length > 0">
                         <li v-for="(itemx,idx) in item.searchResult" :key="idx">
-                            <router-link to="/songDetail">
+                            <router-link :to="`/songDetail?id=${itemx.id}`">
                                 <span class="name">{{itemx.name}}</span>
                                 <span>{{itemx.artists[0].name}}</span>
                                 <span>{{itemx.album.name}}</span>

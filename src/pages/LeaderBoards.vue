@@ -28,21 +28,7 @@
                 </div>
             </div>
             <div class="boardrightContent">
-                <div class="boardrightContentTitle">
-                    <h3>歌曲列表</h3>
-                    <span>{{boardRightData.playlist.trackCount}}首歌</span>
-                    <p>播放：<span class="red">{{boardRightData.playlist.playCount}}</span> 次</p>
-                </div>
-                <ul class="searchList">
-                    <li v-for="(i,idxs) in boardRightData.playlist.tracks" :key="idxs">
-                        <router-link :to="`/songDetail?id=${i.id}`">
-                            <span class="number">{{idxs + 1}}</span>
-                            <span class="name"><img :src="i.al.picUrl" class="pic">{{i.name}}</span>
-                            <span>{{i.dt | transformTime}}</span>
-                            <span>{{i.ar[0].name}}</span>
-                        </router-link>
-                    </li>
-                </ul>
+                <SongListComponent :songlistData="boardRightData.playlist"></SongListComponent>
                 <div class="commentbox">
                     <CommentComponent :commentData="commentPlaylist.hotComments" name="精彩评论"></CommentComponent>
                     <CommentComponent :commentData="commentPlaylist.comments" name="评论"></CommentComponent>
@@ -53,12 +39,14 @@
 </template>
 <script>
     import { mapState, mapMutations, mapActions } from 'vuex'
-    import CommentComponent from '@/components/CommentComponent'
     import filter from '../filter.js'
+    import CommentComponent from '@/components/CommentComponent'
+    import SongListComponent from '@/components/SongListComponent'
     export default {
         name:"LeaderBoards",
         components:{
-            CommentComponent
+            CommentComponent,
+            SongListComponent
         },
         data () {
             return {
@@ -232,21 +220,7 @@
                 }
             }
         }
-        .boardrightContentTitle {
-            display: flex;
-            border-bottom:2px solid $red;
-            padding:20px 0 10px 0;
-            font-size: $font-size - 2;
-            align-items: center;
-            h3 {
-                font-weight: normal;
-                margin-right: 20px;
-                font-size:$font-size + 4;
-            }
-            span {
-                flex:1;
-            }
-        }
+        
     }
 }
 </style>

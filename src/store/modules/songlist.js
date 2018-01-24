@@ -11,6 +11,11 @@ export default {
         songdetail:[], //歌曲详情
         topalbum:[], //新碟上架
         simisong:[], //相似歌曲
+        songlistdetail:[], //歌单详情
+        songlistcomment:[], //歌单评论
+        songlisthighquality:[], //精品歌单
+        albumdetail:[], //专辑详情
+        albumcomment:[], //专辑评论
     },
     mutations: {
         GETSONGS (state, res) {
@@ -39,6 +44,21 @@ export default {
         },
         GETSIMISONG(state, res) {
             state.simisong = res
+        },
+        GETSONGLISTDETAIL(state, res) {
+            state.songlistdetail = res
+        },
+        GETSONGLISTCOMMENT(state, res){
+            state.songlistcomment = res
+        },
+        GETSONGLISTHIGHQUALITY(state, res){
+            state.songlisthighquality = res
+        },
+        GETALBUMDETAIL(state, res){
+            state.albumdetail = res
+        },
+        GETALBUMCOMMENT(state, res){
+            state.albumcomment = res
         }
     },
     actions: {
@@ -149,6 +169,56 @@ export default {
             })
             if(res) {
                 commit('GETSIMISONG',res);
+            }
+            return res;
+        },
+        //歌单详情
+        async getSongListData ({commit}, {id}) {
+            let res = await axiosRq('GET', 'playlist/detail',{
+                'id':id
+            })
+            if(res) {
+                commit('GETSONGLISTDETAIL',res);
+            }
+            return res;
+        },
+        //歌单评论
+        async getSongListCommentData ({commit}, {id}) {
+            let res = await axiosRq('GET', 'comment/playlist',{
+                'id':id
+            })
+            if(res) {
+                commit('GETSONGLISTCOMMENT',res);
+            }
+            return res;
+        },
+        //精品歌单
+        async getSongListHighqualityData ({commit}, {limit}) {
+            let res = await axiosRq('GET', 'top/playlist/highquality',{
+                'limit':limit || 30
+            })
+            if(res) {
+                commit('GETSONGLISTHIGHQUALITY',res);
+            }
+            return res;
+        },
+        //专辑内容
+        async getAlbumDetailData ({commit}, {id}) {
+            let res = await axiosRq('GET', 'album',{
+                'id':id
+            })
+            if(res) {
+                commit('GETALBUMDETAIL',res);
+            }
+            return res;
+        },
+        //专辑评论
+        async getAlbumCommentData ({commit}, {id}) {
+            let res = await axiosRq('GET', '/comment/album',{
+                'id':id
+            })
+            if(res) {
+                commit('GETALBUMCOMMENT',res);
             }
             return res;
         },

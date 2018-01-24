@@ -9,6 +9,8 @@ import NewAlbum from '@/pages/NewAlbum'
 import Search from '@/pages/Search'
 import Artist from '@/pages/Artist'
 import SongDetail from '@/pages/SongDetail'
+import SongListDetail from '@/pages/SongListDetail'
+import AlbumDetail from '@/pages/AlbumDetail'
 
 Vue.use(Router)
 
@@ -61,6 +63,14 @@ export default new Router({
       path:'/songDetail',
       name:'songDetail',
       component:SongDetail
+    },{
+      path:'/songlistDetail',
+      name:'songlistDetail',
+      component:SongListDetail
+    },{
+      path:'/albumDetail',
+      name:'albumDetail',
+      component:AlbumDetail
     }
   ]
 })

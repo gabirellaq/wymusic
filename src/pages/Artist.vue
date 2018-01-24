@@ -11,7 +11,7 @@
                         <div v-if="item.name==='songs'" class="songs">
                             <ul class="searchList">
                                 <li v-for="(i,idx) in songsJson.hotSongs" :key="idx">
-                                    <router-link to="/songDetail">
+                                    <router-link :to="`/songDetail?id=${i.id}`">
                                         <span class="name">{{i.name}}<b v-if="i.alia.length>0">-{{i.alia[0]}}</b></span>
                                         <span>{{i.dt | transformTime}}</span>
                                         <span>{{i.al.name}}</span>

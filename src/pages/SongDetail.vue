@@ -26,12 +26,17 @@
             </div>
             <div class="containerLeft">
                 <div class="margin">
-                    <div class="smallTitle">相似歌曲</div>
-                    <ul v-if="simisongJson">
-                        <li v-for="(i,index) in simisongJson" :key="index">
-                            
-                        </li>
-                    </ul>
+                    <div class="simisongbox">
+                        <div class="smallTitle">相似歌曲</div>
+                        <ul v-if="simisongJson">
+                            <li v-for="(i,index) in simisongJson" :key="index">
+                                <router-link :to="`/songDetail?id=${i.id}`">
+                                    <span class="songname">{{i.name}}</span>
+                                    <span class="name">{{i.artists[0].name}}</span>
+                                </router-link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -79,7 +84,7 @@
             //歌词
             this.getlyricData({id});  
             //相似歌曲
-            this.getSimiSongData(id);         
+            this.getSimiSongData({id});         
         }
     }
 </script>
@@ -123,6 +128,19 @@
             top: -4px;
             left: -4px;
             background:url('../assets/images/coverall.png') no-repeat -140px -580px;
+        }
+    }
+    .simisongbox {
+        li {
+            padding: 5px 0;
+            border-bottom:1px dashed darken($grey,5%);
+            span {
+                display: block;
+                line-height:20px;
+            }
+            .name {
+                color:$font-detail-color;
+            }
         }
     }
 }
