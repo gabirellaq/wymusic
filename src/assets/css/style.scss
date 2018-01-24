@@ -54,6 +54,61 @@ body {
     color:$red;
 }
 
+.containerTitle {
+    display: flex;
+    align-items: center;
+    border-bottom:2px solid $red;
+    font-size: $font-size * 2;
+    padding:10px 0;
+}
+.smallTitle{
+    font-size: $font-size;
+    border-bottom: 1px solid darken($grey, 10%);
+    padding:5px 0;
+}
+.container {
+    display: flex;
+    .containerLeft{
+        width:270px;
+        background: $body-color;
+        border-right:1px solid $border-area-color;
+        font-size: $font-size - 2;
+        h4 {
+            padding:20px 20px 10px 20px;
+            font-size: $font-size;
+        }
+        .menulist {     
+            color: inherit;
+            display: flex;
+            align-items: center;
+            padding:10px 20px;
+            cursor: pointer;
+            img {
+                width:40px;
+                height: 40px;
+                margin-right:10px;
+            }
+            span {
+                flex:1;
+            }
+            &.active {
+                background: darken($grey,4%);
+            }
+        }
+    }
+    .containerRight {
+        flex:1;
+        border-right:1px solid $grey;
+        padding: 15px 30px 40px 39px;
+        overflow: hidden;
+    }
+
+}
+
+.margin {
+    margin:0 27px;
+}
+
 #Search{
     margin:20px 5%;
     color:$font-color;
@@ -68,12 +123,14 @@ body {
 .searchList{
     padding:10px 0;
     font-size: $font-size - 2;        
-    li{
-        display: flex;
-        padding:10px 20px;
-        align-items: center;
+    li{        
         &:nth-child(even) {
             background:$grey;
+        }
+        a{
+            display: flex;
+            padding:10px 20px;
+            align-items: center;
         }
         span {
             overflow: hidden;
@@ -89,13 +146,8 @@ body {
                         color:$font-detail-color;
                     }
                 }
-                .pic {
-                    width:40px;
-                    height:40px;
-                    margin-right: 10px;
-                    vertical-align: middle;
-                }
             }
+            
             flex: 1;
             text-align:left;
             &:last-child {
@@ -107,6 +159,23 @@ body {
                 flex:none;
             }
         }
+        .pic,
+        .pic img {
+            width:40px;
+            height:40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .category {
+            i{
+                font-style: normal;
+                font-size:$font-size - 2;
+                border:1px solid darken($grey,5%);
+                color:$font-detail-color;
+                padding: 5px;
+                line-height: 28px;
+            }
+        }
     }
 }
 .searchsingerList {
@@ -115,7 +184,7 @@ body {
     li {
         width:130px;
         display:block;
-        margin:10px;
+        margin: 21px 30px 0 0;
         a {
             display:block;
             color:$font-color;
@@ -288,7 +357,7 @@ body {
         li {
             display:block;
             padding:0;
-            margin:10px 27px;
+            margin: 21px 44px 0 0;
             width:140px;
             > * {
                 display:block;

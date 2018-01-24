@@ -12,11 +12,11 @@
                 </el-button-group>
             </span>
         </div>
-        <songsComponent :songsData="songsJson" class="songlistcomponent"></songsComponent>
+        <songsComponent :songsData="songsJson.playlists" class="songlistcomponent margin"></songsComponent>
     </div>
 </template>
 <script>
-    import { mapMutations, mapActions } from 'vuex'
+    import { mapState, mapMutations, mapActions } from 'vuex'
     import songsComponent from '@/components/SongsComponent'
     export default {
         name:"SongList",
@@ -26,7 +26,6 @@
         data () {
             return {
                 title: '歌单',
-                songsJson:[]
             }
         },
         methods: {
@@ -34,21 +33,16 @@
                 'getSongsData'
             ]),
             get_Songs(order) {
-                this.getSongsData(order)
-                    .then(res => {
-                        if(res){
-                            this.songsJson = res.playlists;
-                        }
-                    }).catch(err => {
-                        console.log("get_songs", err)
-                    })
+                this.getSongsData({'order':order});
             },
-            init() {
-                this.get_Songs('hot')
-            }
+        },
+        computed: {
+            ...mapState({
+                'songsJson': state => state.songlist.songs,
+            })
         },
         mounted() {
-            this.init()
+            this.get_Songs('hot');
         }
     }
 </script>
@@ -63,6 +57,15 @@
     .choose {
         flex:auto;
         margin:0 10px;
+    }
+}
+#SongList {
+    a {
+        padding:0;
+        .name,
+        .nickname {
+            display: block;
+        }
     }
 }
 </style>

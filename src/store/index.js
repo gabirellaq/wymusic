@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import banner from './modules/banner'
 import songlist from './modules/songlist'
 import singer from './modules/singer'
+import anchoradio from './modules/anchoradio'
 
 import search from './modules/search'
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
         banner,
         songlist,
         singer,
-        search
+        search,
+        anchoradio
     }
 })

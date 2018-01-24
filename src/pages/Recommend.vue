@@ -1,90 +1,140 @@
 <template>
     <div id="Recommend">
-        <BannerComponent :toBanner="bannerJson"></BannerComponent>
-        <div class="area">
-            <div class="wrap">
-                <div class="wrapTitle">
-                    <h1>{{recommendSongTitle}}</h1>
-                    <span class="more">
-                        <router-link to="/songlist">更多 <i class="el-icon-d-arrow-right"></i></router-link>
-                    </span>
+        <BannerComponent :toBanner="bannerJson.banners"></BannerComponent>
+        <div class="area container">
+            <div class="containerRight">
+                <div class="wrap">
+                    <div class="containerTitle wrapTitle">
+                        <h4>{{recommendSongTitle}}</h4>
+                        <span class="more">
+                            <router-link to="/songlist">更多 <i class="el-icon-d-arrow-right"></i></router-link>
+                        </span>
+                    </div>
+                    <div class="wrapcontent songlistcomponent" >
+                        <ul class="songsList" v-if="recommendSongJson">
+                            <li v-for="(itemx,idx) in recommendSongJson.result" :key="idx">
+                                <img :src="itemx.picUrl" class="pic">
+                                <span>{{itemx.copywriter}}</span>
+                                <span class="name">{{itemx.name}}</span>                            
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="wrapcontent songlistcomponent" >
-                    <ul class="songsList" v-if="recommendSongJson.length > 0">
-                        <li v-for="(itemx,idx) in recommendSongJson" :key="idx">
-                            <img :src="itemx.picUrl" class="pic">
-                            <span>{{itemx.copywriter}}</span>
-                            <span class="name">{{itemx.name}}</span>                            
-                        </li>
-                    </ul>
+                <div class="wrap">
+                    <div class="containerTitle wrapTitle">
+                        <h4>{{topAlbumTitle}}</h4>
+                        <span class="more">
+                            <router-link to="/newAlbum">更多 <i class="el-icon-d-arrow-right"></i></router-link>
+                        </span>
+                    </div>
+                    <div class="wrapcontent" >
+                        <AlbumComponent :albumData="albumDataJson.albums"></AlbumComponent>
+                    </div>
                 </div>
+            </div>
+            <div class="containerLeft">
+                <div class="smallTitle">{{hotSingersTitle}}</div>
+                <SingersComponent :singersData="hotSingersJson.artists"></SingersComponent>
             </div>
         </div>
     </div>
 </template>
 <script>
-    import { mapMutations, mapActions } from 'vuex'
+    import { mapState, mapMutations, mapActions } from 'vuex'
     import BannerComponent from '@/components/BannerComponent'
+    import AlbumComponent from '@/components/AlbumComponent'
+    import SingersComponent from '@/components/SingersComponent'
     export default {
         name:"Recommend",
         components:{
-            BannerComponent
+            BannerComponent,
+            AlbumComponent,
+            SingersComponent
         },
         data () {
             return {
                 title: '推荐歌单',
                 recommendSongTitle: '热门推荐',
-                bannerJson:[],
-                recommendSongJson:[], //热门推荐
+                topAlbumTitle: '新碟上架',
+                hotSingersTitle: '热门歌手'
             }
         },
         methods: {
             ...mapActions([
                 'getBannerData',
-                'getRecommendSongsData'
-            ]),
-            get_Banner() {
-                this.getBannerData()
-                    .then(res => {
-                        if(res){
-                            this.bannerJson = res.banners;
-                        }
-                    }).catch(err => {
-                        console.log("get_banner", err)
-                    })
-            },
-            get_recommendsong(limit){
-                this.getRecommendSongsData({'limit':limit})
-                    .then(res=>{
-                        this.recommendSongJson = res.result
-                    }).catch(err => {
-                        console.log("get_recommendsong", err)
-                    })
-            },
-            init() {
-                this.get_Banner();
-                this.get_recommendsong();
-            }
+                'getRecommendSongsData',
+                'getTopAlbumData',
+                'getHotSingersData'
+            ])
+        },        
+        computed: {
+            ...mapState({
+                'bannerJson': state => state.banner.banner,
+                'recommendSongJson': state => state.songlist.recommendsong,
+                'albumDataJson': state => state.songlist.topalbum,
+                'hotSingersJson': state => state.singer.hotsingers
+            }),
         },
         mounted() {
-            this.init()
-        }
+            //bannner
+            this.getBannerData();
+            //推荐歌曲
+            this.getRecommendSongsData({'limit':8});
+            //新碟上架
+            this.getTopAlbumData({'offset':0,'limit':8});
+            //热门歌手
+            this.getHotSingersData({'offset':0, 'limit':8});
+        },
     }
 </script>
 
 <style lang="scss">
 @import "../assets/css/variables.scss";
-.wrapTitle {
-    padding:10px;
-    margin: 0 23px;
-    border-bottom: 2px solid $red;;
-    padding: 20px 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    h1 {
-        font-weight:normal;
-        flex: 1;
+#Recommend {
+    .wrapTitle {
+        h4 {
+            font-weight:normal;
+            flex: 1;
+        }
+        span {
+            font-size: $font-size;
+        }
+    }
+    .wrapcontent{
+        padding-bottom: 27px;
+    }
+    .containerLeft {
+        width: 228px;
+        background-color: $white;
+        padding: 14px;
+        .containerTitle {
+            font-size:$font-size;
+            border-width:1px;
+            border-color:darken($grey,10%);
+        }
+        .searchsingerList {
+            display: block;
+            li {
+                margin-right: 0;
+                margin-top: 10px;
+                display: flex;
+                width: 100%;
+                background-color: $grey;
+                border:1px solid darken($grey,10%);
+                img {
+                    width: 60px;
+                    height:60px;
+                    margin-right: 10px;
+                    border:0;
+                }
+            }
+        }
+    }
+    .songlistcomponent li{
+        margin-right: 30px;
+    }
+    .albumList li {
+        margin-right: 17px;
     }
 }
 </style>

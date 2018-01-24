@@ -7,10 +7,12 @@
                     <!--单曲-->                                  
                     <ul class="searchList" v-if="item.searchResult.length > 0">
                         <li v-for="(itemx,idx) in item.searchResult" :key="idx">
-                            <span class="name">{{itemx.name}}</span>
-                            <span>{{itemx.artists[0].name}}</span>
-                            <span>{{itemx.album.name}}</span>
-                            <span>{{itemx.duration | transformTime}}</span>
+                            <router-link to="/songDetail">
+                                <span class="name">{{itemx.name}}</span>
+                                <span>{{itemx.artists[0].name}}</span>
+                                <span>{{itemx.album.name}}</span>
+                                <span>{{itemx.duration | transformTime}}</span>
+                            </router-link>
                         </li>
                     </ul>
                 </div>
@@ -38,25 +40,7 @@
                 </div>
                 <div v-if="item.type == 1006">
                     <!--歌词-->
-                    <ul class="lyricList" v-if="item.searchResult.length > 0">
-                        <li v-for="(itemx,idx) in item.searchResult" :key="idx">
-                            <span class="lyricDes">
-                                <span>{{itemx.name}}</span>
-                                <span>{{itemx.artists[0].name}}</span>
-                                <span>《{{itemx.album.name}}》</span>
-                                <span>{{itemx.duration | transformTime}}</span>
-                            </span>
-                            <span class="lyrics">
-                                <span :class="{collapse:isCollapse}" class="lyricstext">
-                                    <p v-for="(text,idxs) in  (itemx.lyrics.txt).split('\n')" :key="idxs">{{text}}</p>
-                                </span>
-                                <span class="crl" @click="collapse()">
-                                    <span v-if="isCollapse">展开<i class="el-icon-arrow-down"></i></span>
-                                    <span v-else>收缩<i class="el-icon-arrow-up"></i></span>
-                                </span>
-                            </span>
-                        </li>
-                    </ul>
+                    <LyricComponent :lyricData="item.searchResult" name="search"></LyricComponent>
                 </div>
                 <div v-if="item.type == 1000">
                     <!--歌单-->
@@ -76,14 +60,16 @@
                     <!--用户-->
                     <ul class="searchList userList" v-if="item.searchResult.length > 0" >
                         <li v-for="(itemx,idx) in item.searchResult" :key="idx">
-                            <img :src="itemx.avatarUrl">
-                            <span class="name">
-                                <i>{{itemx.nickname}}</i>
-                                <i class="des">{{itemx.signature}}</i>
-                            </span>
-                            <span><el-button size="small" icon="el-icon-plus">加关注</el-button></span>
-                            <span>歌单: {{itemx.authority | transformNumber}}</span>
-                            <span>粉丝: {{itemx.followed | transformNumber}}</span>
+                            <a>
+                                <img :src="itemx.avatarUrl">
+                                <span class="name">
+                                    <i>{{itemx.nickname}}</i>
+                                    <i class="des">{{itemx.signature}}</i>
+                                </span>
+                                <span><el-button size="small" icon="el-icon-plus">加关注</el-button></span>
+                                <span>歌单: {{itemx.authority | transformNumber}}</span>
+                                <span>粉丝: {{itemx.followed | transformNumber}}</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -92,24 +78,25 @@
     </div>
 </template>
 <script>
-    import { mapMutations, mapActions } from 'vuex';
+    import { mapState,mapMutations, mapActions } from 'vuex';
     import SingersComponent from '@/components/SingersComponent'
     import AlbumComponent from '@/components/AlbumComponent'
-    import SongsComponent from '@/components/SongsComponent'    
+    import SongsComponent from '@/components/SongsComponent'
+    import LyricComponent from '@/components/LyricComponent'    
     import filter from '../filter.js'
     export default {
         name:"Search",
         components:{
             SingersComponent,
             AlbumComponent,
-            SongsComponent
+            SongsComponent,
+            LyricComponent
         },        
         data () {
             return {
                 title: '搜索',
                 SearchModel:'single',
                 keywords:'',
-                isCollapse:true,
                 type:1, // type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲 10: 专辑 100: 歌手 1000: 歌单 1002: 用户 1004: MV 1006: 歌词 1009: 电台
                 tabList: [
                     {
@@ -212,9 +199,6 @@
             handleClick (tab, event) {
                 this.type = tab.$attrs.type;
                 this.query(this.keywords, this.type);
-            },
-            collapse() {
-                this.isCollapse = !this.isCollapse
             },
             init() {
                 this.keywords = this.$route.query.q;

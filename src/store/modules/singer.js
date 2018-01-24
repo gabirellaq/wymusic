@@ -9,6 +9,7 @@ export default {
         mv:[], //歌手MV
         singerdes:[], //歌手描述
         hotsingers:[], //热门歌手
+        samesingers:[], //相似歌手
     },
     mutations: {
         GETSINGERSONG (state, res) {
@@ -25,6 +26,9 @@ export default {
         },
         GRTHOTSINGERS (state, res) {
             state.hotsingers = res;
+        },
+        GRTSAMESINGERS(state, res) {
+            state.samesingers = res
         }
     },
     actions: {
@@ -34,10 +38,9 @@ export default {
                 'id':id
             }
             let res = await axiosRq('GET', 'artists', parmas)
-            if(res.data) {
-                commit('GETSINGERSONG',res.data);
+            if(res) {
+                commit('GETSINGERSONG',res);
             }
-            return res
         },
         //one simger album
         async getSingerAlbumData ({commit}, {id,limit}) {
@@ -46,10 +49,9 @@ export default {
                 'limit': limit || 50
             }
             let res = await axiosRq('GET', 'artist/album', parmas)
-            if(res.data) {
-                commit('GETSINGERALBUM',res.data);
+            if(res) {
+                commit('GETSINGERALBUM',res);
             }
-            return res
         },
         //one singer mv
         async getSingerMVData ({commit}, {id}) {
@@ -57,10 +59,9 @@ export default {
                 'id':id
             }
             let res = await axiosRq('GET', 'artist/mv', parmas)
-            if(res.data) {
-                commit('GETSINGERMV',res.data);
+            if(res) {
+                commit('GETSINGERMV',res);
             }
-            return res
         },
         //one singer description
         async getSingerDesData ({commit}, {id}) {
@@ -68,10 +69,9 @@ export default {
                 'id':id
             }
             let res = await axiosRq('GET', 'artist/desc', parmas)
-            if(res.data) {
-                commit('GETSINGERDES',res.data);
+            if(res) {
+                commit('GETSINGERDES',res);
             }
-            return res
         },
         //hot singers
         async getHotSingersData ({commit}, {offset, limit}) {
@@ -80,10 +80,20 @@ export default {
                 'limit':limit || 50,
             }
             let res = await axiosRq('GET', 'top/artists', params)
-            if(res.data) {
-                commit('GRTHOTSINGERS',res.data);
+            if(res) {
+                commit('GRTHOTSINGERS',res);
             }
-            return res
-        }
+        },
+        // 相似歌手
+        async getSameSingersData ({commit}, {id, limit}) {
+            let params= {                
+                'id': id,
+                'limit':limit || 50,
+            }
+            let res = await axiosRq('GET', 'simi/artist', params)
+            if(res) {
+                commit('GRTSAMESINGERS',res);
+            }
+        },
     }
 }

@@ -1,8 +1,8 @@
 <template>
     <div id="CommentComponent" class="comments" v-if="commentData">
-        <div class="commentTitle">精彩评论</div>
+        <div class="commentTitle">{{name}}<span>{{commentData.length}}条</span></div>
         <ul>
-            <li v-for="(i,index) in commentData.hotComments" :key="index">
+            <li v-for="(i,index) in commentData" :key="index">
                 <img v-if="i.user.avatarUrl !== null" :src=" i.user.avatarUrl | filterImg">
                 <img v-else src="http://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg">  
                 <div class="b">
@@ -17,8 +17,8 @@
     import filter from '../filter.js'
     export default {
         name:"CommentComponent",
-        title:"精彩评论",
-        props:['commentData'],
+        pagename:"精彩评论",
+        props:['commentData','name'],
         data () {
             return {
                 
@@ -40,7 +40,12 @@
     .commentTitle {
         padding:5px 0;
         border-bottom: 1px solid $grey;
-        font-size: $font-size + 4;
+        font-size: $font-size + 2;
+        span {
+            font-size: $font-size;
+            color:$red;
+            margin-left: 2px;
+        }
     }
     ul {
         li {

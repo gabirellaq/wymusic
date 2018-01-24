@@ -1,19 +1,21 @@
 <template>
     <div id="Artist" class="area">
-        <div class="artistbox">
-            <div class="colleft">
+        <div class="artistbox container">
+            <div class="containerRight">
                 <h1 class="name">{{singer.name}}</h1>
                 <div class="singerAvator">
-                    <img :src="singer.avator" alt="">
+                    <img :src="singer.avator | filterImg" alt="">
                 </div>
                 <el-tabs v-model="singerModelTab" type="border-card" @tab-click="singerTabClick">
                     <el-tab-pane v-for="(item,index) in singer.menu" :key="index" :label="item.label" :name="item.name">
                         <div v-if="item.name==='songs'" class="songs">
                             <ul class="searchList">
                                 <li v-for="(i,idx) in songsJson.hotSongs" :key="idx">
-                                    <span class="name">{{i.name}}<b v-if="i.alia.length>0">-{{i.alia[0]}}</b></span>
-                                    <span>{{i.dt | transformTime}}</span>
-                                    <span>{{i.al.name}}</span>
+                                    <router-link to="/songDetail">
+                                        <span class="name">{{i.name}}<b v-if="i.alia.length>0">-{{i.alia[0]}}</b></span>
+                                        <span>{{i.dt | transformTime}}</span>
+                                        <span>{{i.al.name}}</span>
+                                    </router-link>
                                 </li>
                             </ul>
                         </div>
@@ -34,34 +36,29 @@
                     </el-tab-pane>
                 </el-tabs>
             </div>
-            <div class="colright">
+            <div class="containerLeft">
                 <div class="artTitle">{{hotSingersTitle}}</div>
-                <div class="hotsingersbox">
-                    <ul>
-                        <li v-for="(item,index) in hotSingersJson.artists" :key="index">
-                            <img :src="item.picUrl | filterImg" alt="">
-                            <p>{{item.name}}</p>
-                        </li>
-                    </ul>
-                </div>
+                <SingersComponent class="hotsingersbox" :singersData="hotSingersJson.artists"></SingersComponent>
             </div>
         </div>
     </div>
 </template>
 <script>
-    import { mapMutations, mapActions } from 'vuex'
+    import { mapMutations, mapActions, mapState } from 'vuex'
     import {filter} from '../filter.js'
     import AlbumComponent from '@/components/AlbumComponent'
     import MVComponent from '@/components/MVComponent'
+    import SingersComponent from '@/components/SingersComponent'
     export default {
         name:"Artist",
         components:{
             AlbumComponent,
-            MVComponent
+            MVComponent,
+            SingersComponent
         },
         data () {
             return {
-                title: '歌手单页',
+                pagename: '歌手单页',
                 singer:{
                     'name':'',
                     'avator':'',
@@ -84,11 +81,6 @@
                 },
                 singerModelTab:'songs',
                 hotSingersTitle:'热门歌手',
-                songsJson:[], //歌手单曲
-                singerAlbum:[], //歌手专辑,
-                singerMV:[], //歌手MV
-                singerdesJson: [], //歌手描述
-                hotSingersJson:[], //热门歌手
 
             }
         },
@@ -98,56 +90,32 @@
                 'getHotSingersData',
                 'getSingerSongData',
                 'getSingerAlbumData',
-                'getSingerMVData'
+                'getSingerMVData',
+                'getSameSingersData'
             ]),
             //歌手单曲
             get_singersong(id, limit){
-                this.getSingerSongData({'id':id, 'limit':limit})
-                    .then(res=> {
-                        if(res){
-                            this.songsJson = res
-                        }
-                    }).catch(err=> {
-                        console.log("singer song:",err)
-                    })
+                this.getSingerSongData({'id':id, 'limit':limit});
             },
             //歌手专辑
             get_singeralbum(id, limit){
                 this.getSingerAlbumData({'id':id,'limit':limit})
-                    .then(res=>{
-                        this.singerAlbum = res;
-                    }).catch(err=>{
-                        console.log("singer ablum:", err)
-                    })
             },
             //歌手MV
             get_singermv(id){
                 this.getSingerMVData({'id':id})
-                    .then(res=>{
-                        this.singerMV = res;
-                    }).catch(err=>{
-                        console.log("singer mv:", err)
-                    })
             },
             //歌手描述
             get_singerdes(id){
                 this.getSingerDesData({'id':id})
-                    .then(res=> {
-                        if(res){
-                            this.singerdesJson = res
-                        }
-                    }).catch(err=>{
-                        console.log("get_singerdes", err)
-                    })
             },
             //get hot singers
             get_hotsingers(offset, limit){
                 this.getHotSingersData({'offset':offset, 'limit':limit})
-                    .then(res=>{
-                        this.hotSingersJson = res;
-                    }).catch(err=>{
-                        console.log("hot singers:",err);
-                    })
+            },
+            //相似歌手
+            get_samesingers(id,limit){
+                this.getSameSingersData({'id':id,'limit':limit})
             },
             singerTabClick(tab, event){
                 switch(tab.name) {
@@ -171,7 +139,18 @@
                 this.singer.name = this.$route.query.name;
                 this.get_singersong(this.singer.id ); //热门单曲
                 this.get_hotsingers(0, 6); //热门歌手
+                // this.get_samesingers(this.singer.id); //相似歌手
             }
+        },
+        computed: {
+            ...mapState({
+                'songsJson' : state => state.singer.song,
+                'singerAlbum': state => state.singer.ablum,
+                'singerMV': state => state.singer.mv,
+                'singerdesJson': state => state.singer.singerdes,
+                'hotSingersJson': state => state.singer.hotsingers,
+                'sameSingersJson': state => state.singer.samesingers
+            })
         },
         mounted(){
             this.init();
@@ -181,19 +160,10 @@
 <style lang="scss">
 @import "../assets/css/variables.scss";
 .artistbox {
-    display: flex;
-    .colright{
-        width:270px;
-        padding: 20px 40px 40px 30px;
-    }
-    .colleft {
-        flex:1;
-        border-right:1px solid $grey;
-        padding: 15px 30px 40px 39px;
-    }
     .artTitle {
-        padding-bottom:10px;
-        border-bottom:1px solid $grey;
+        padding:10px;
+        margin:10px;
+        border-bottom:1px solid darken($grey,5%);
     }
     .hotsingersbox {
         padding:9px;
@@ -206,7 +176,6 @@
                 img{
                     width:100%;
                     height:50px;
-                    margin-bottom:5px;
                 }
                 p{
                     font-size:$font-size - 2;

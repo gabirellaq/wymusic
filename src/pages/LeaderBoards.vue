@@ -1,22 +1,22 @@
 <template>
-    <div id="LeaderBoards" class="area">
-        <div class="leftbox">
+    <div id="LeaderBoards" class="area container">
+        <div class="containerLeft">
             <h4>{{specialTitle}}</h4>
             <div class="boardbox">
-                <div class="boardlist" :class="{active: isActive === item.type}" v-for="(item,idx) in specialBoardData" :key="idx" @click="boardTabClick(item.type)">
+                <div class="menulist" :class="{active: isActive === item.type}" v-for="(item,idx) in specialBoardData" :key="idx" @click="boardTabClick(item.type)">
                     <img :src="item.pic">
                     <span>{{item.label}}</span>
                 </div>
             </div>
             <h4>{{globalTitle}}</h4>
             <div class="boardbox">
-                <div class="boardlist" :class="{active: isActive === item.type}" v-for="(item,idx) in globalBoardData" :key="idx" @click="boardTabClick(item.type)">
+                <div class="menulist" :class="{active: isActive === item.type}" v-for="(item,idx) in globalBoardData" :key="idx" @click="boardTabClick(item.type)">
                     <img :src="item.pic">
                     <span>{{item.label}}</span>
                 </div>                
             </div>
         </div>
-        <div class="rightbox" v-if="boardRightData.playlist">
+        <div class="containerRight" v-if="boardRightData.playlist">
             <div class="boardrightTitle">
                 <img :src="boardRightData.playlist.coverImgUrl | filterImg">
                 <div class="boardrightTitleTxt">
@@ -35,21 +35,24 @@
                 </div>
                 <ul class="searchList">
                     <li v-for="(i,idxs) in boardRightData.playlist.tracks" :key="idxs">
-                        <span class="number">{{idxs + 1}}</span>
-                        <span class="name"><img :src="i.al.picUrl" class="pic">{{i.name}}</span>
-                        <span>{{i.dt | transformTime}}</span>
-                        <span>{{i.ar[0].name}}</span>
+                        <router-link :to="`/songDetail?id=${i.id}`">
+                            <span class="number">{{idxs + 1}}</span>
+                            <span class="name"><img :src="i.al.picUrl" class="pic">{{i.name}}</span>
+                            <span>{{i.dt | transformTime}}</span>
+                            <span>{{i.ar[0].name}}</span>
+                        </router-link>
                     </li>
                 </ul>
                 <div class="commentbox">
-                    <CommentComponent :commentData="commentPlaylist"></CommentComponent>
+                    <CommentComponent :commentData="commentPlaylist.hotComments" name="精彩评论"></CommentComponent>
+                    <CommentComponent :commentData="commentPlaylist.comments" name="评论"></CommentComponent>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-    import { mapMutations, mapActions } from 'vuex'
+    import { mapState, mapMutations, mapActions } from 'vuex'
     import CommentComponent from '@/components/CommentComponent'
     import filter from '../filter.js'
     export default {
@@ -59,7 +62,8 @@
         },
         data () {
             return {
-                title: '排行榜',
+                pagename: '排行榜',
+                id:'', //每个歌单的id,用于获取评论
                 isActive: 3, //当前显示的menu
                 specialTitle:'云音乐特色榜',
                 specialBoardData:[
@@ -165,45 +169,34 @@
                         'pic':'http://p1.music.126.net/_nwkQTFtOdAjFvOI8Wg7Tg==/18922595114302109.jpg?param=40y40'
                     }
                 ],
-                boardRightData:[], //排行榜具体歌曲数据
-                commentPlaylist:[], //歌单评论数据
             }
         },
         methods: {
             ...mapActions([
-                'getLeaderboardsData', //歌单
-                'getCommentPlaylistData' //歌单评论
+                'getLeaderboardsData',
+                'getCommentPlaylistData'
             ]),
             //tab click
-            boardTabClick(id) {
-                this.isActive = id;
-                this.get_leaderboard(id);
+            boardTabClick(type) {
+                this.isActive = type;
+                this.getLeaderboardsData({'idx':type});
+                this.id = this.$store.state.songlist.leaderboards.playlist.id;
+                this.getCommentPlaylistData({'id':this.id});
             },
-            //get leaderboard
-            get_leaderboard(idx) {
-                this.getLeaderboardsData({'idx':idx})
-                    .then(res=>{
-                        this.boardRightData = res;
-                        this.get_commentplaylist(res.playlist.id);
-                    }).catch(err=> {
-                        console.log("get leaderboard:", err)
-                    })
-            },
-            // 歌单评论
-            get_commentplaylist(id){
-                this.getCommentPlaylistData({'id':id})
-                    .then(res=>{
-                        this.commentPlaylist = res;
-                    }).catch(err=>{
-                        console.log("comment playlist:", err)
-                    })
-            },
-            init () {
-                this.get_leaderboard(3);
-            }
+        },
+        computed: {
+            ...mapState({
+                'boardRightData': state => state.songlist.leaderboards, //排行榜具体歌曲数据
+                'commentPlaylist': state => state.songlist.commentplaylist ////歌单评论数据
+            })
         },
         mounted() {
-            this.init();
+            //排行榜
+            this.getLeaderboardsData({'idx':3}).then(r=>{
+                this.id = this.$store.state.songlist.leaderboards.playlist.id;
+                this.getCommentPlaylistData({'id':this.id});
+            });
+            
         }
     }
 </script>
@@ -211,35 +204,10 @@
 @import "../assets/css/variables.scss";
 #LeaderBoards {
     display: flex;
-    .leftbox {
+    .containerLeft {
         width:240px;
-        background: $body-color;
-        border-right:1px solid $border-area-color;
-        font-size: $font-size - 2;
-        h4 {
-            padding:20px 20px 10px 20px;
-            font-size: $font-size;
-        }
-        .boardlist {     
-            color: inherit;
-            display: flex;
-            align-items: center;
-            padding:10px 20px;
-            cursor: pointer;
-            img {
-                width:40px;
-                height: 40px;
-                margin-right:10px;
-            }
-            span {
-                flex:1;
-            }
-            &.active {
-                background: darken($grey,4%);
-            }
-        }
     }
-    .rightbox {
+    .containerRight {
         flex:1;
         padding:40px;
         .boardrightTitle {

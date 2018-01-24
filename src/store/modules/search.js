@@ -19,10 +19,8 @@ export default {
                 'limit': limit || 30
             }
             let res = await axiosRq('GET', 'search', params)
-            if(res.data) {
-                commit('GETSEARCH',res.data);
-            }
-            return res
+            commit('GETSEARCH',res);
+            return res;
         }
     }
 }

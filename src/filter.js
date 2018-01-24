@@ -21,7 +21,7 @@ Vue.filter('transformNumber', (value)=>{
     } else if (num >= 0) {
         return num;
     } else {
-        return '';
+        return '0';
     }
 })
 Vue.filter('filterImg', (value)=>{
