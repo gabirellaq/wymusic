@@ -23,7 +23,7 @@
                             <AlbumComponent :albumData="singerAlbum.hotAlbums"></AlbumComponent>
                         </div>
                         <div v-if="item.name==='mv'" class="mvs">
-                            <MVComponent :mvData="singerMV.mvs"></MVComponent>
+                            <MVComponent :mvData="singerMV.mvs" title="singer"></MVComponent>
                         </div>
                         <div v-if="item.name==='description'" class="description">
                             <h3>{{singer.name}}简介</h3>
@@ -45,7 +45,6 @@
 </template>
 <script>
     import { mapMutations, mapActions, mapState } from 'vuex'
-    import {filter} from '../filter.js'
     import AlbumComponent from '@/components/AlbumComponent'
     import MVComponent from '@/components/MVComponent'
     import SingersComponent from '@/components/SingersComponent'
@@ -91,7 +90,7 @@
                 'getSingerSongData',
                 'getSingerAlbumData',
                 'getSingerMVData',
-                'getSameSingersData'
+                'getSameSingersData',
             ]),
             //歌手单曲
             get_singersong(id, limit){

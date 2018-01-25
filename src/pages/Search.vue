@@ -26,17 +26,7 @@
                 </div>
                 <div v-if="item.type == 1004">
                     <!--视频-->
-                    <ul class="searchsingerList mvList" v-if="item.searchResult.length > 0">
-                        <li v-for="(itemx,idx) in item.searchResult" :key="idx">
-                            <span class="mvcover">
-                                <img :src="itemx.cover|filterImg" />
-                                <span class="playcount">{{itemx.playCount | transformNumber}}</span>  
-                                <span class="duration">{{itemx.duration | transformTime}}</span>    
-                            </span>       
-                            <p>{{itemx.name}}</p>
-                            <p>{{itemx.artistName}}</p>                            
-                        </li>
-                    </ul>
+                    <MVComponent :mvData="item.searchResult" title="search"></MVComponent>
                 </div>
                 <div v-if="item.type == 1006">
                     <!--歌词-->
@@ -82,15 +72,16 @@
     import SingersComponent from '@/components/SingersComponent'
     import AlbumComponent from '@/components/AlbumComponent'
     import SongsComponent from '@/components/SongsComponent'
-    import LyricComponent from '@/components/LyricComponent'    
-    import filter from '../filter.js'
+    import LyricComponent from '@/components/LyricComponent'
+    import MVComponent from '@/components/MVComponent'    
     export default {
         name:"Search",
         components:{
             SingersComponent,
             AlbumComponent,
             SongsComponent,
-            LyricComponent
+            LyricComponent,
+            MVComponent
         },        
         data () {
             return {

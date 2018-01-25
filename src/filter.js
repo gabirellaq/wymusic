@@ -29,3 +29,16 @@ Vue.filter('filterImg', (value)=>{
     else if (value.startsWith('http://p4')) return `${value.replace('p4','p1')}`;
     else return value;
 })
+Vue.filter('fiterVideo', (value)=>{
+    if(value.startsWith('http://v3.')) return `${value.replace('v3','v6c')}`;
+    else if (value.startsWith('http://v4.')) return `${value.replace('v4','v6c')}`;
+    else return value;
+})
+Vue.filter('fiterAvator', (value)=>{
+    if(value !== null){
+        value = value;
+    }else{
+        value = 'http://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg'
+    }
+    return value;
+})

@@ -65,6 +65,8 @@ body {
     font-size: $font-size;
     border-bottom: 1px solid darken($grey, 10%);
     padding:8px 0;
+    margin-top: 10px;
+    font-weight: bold;
 }
 .container {
     display: flex;
@@ -242,6 +244,8 @@ body {
             .playcount {
                 right: 5px;
                 top: 5px;
+                color: #fff;
+                text-shadow: 0 0 2px $black;
                 &:before {
                     background:url('~@/assets/images/icon2.png') no-repeat -60px -310px;
                     content:'';
@@ -252,6 +256,19 @@ body {
                     top: 3px;
                 }
             }
+        }
+        span {
+            display: block;
+            line-height: 20px;
+        }
+        .iconplay {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            top: 50%;
+            left: 50%;
+            margin: -22px 0 0 -22px;
+            background: url('~@/assets/images/iconall.png') no-repeat -30px -135px;
         }
     }
 }
@@ -337,15 +354,7 @@ body {
             img{
                 height:103px;
             }
-            .iconplay {
-                position: absolute;
-                width: 44px;
-                height: 44px;
-                top: 50%;
-                left: 50%;
-                margin: -22px 0 0 -22px;
-                background: url('~@/assets/images/iconall.png') no-repeat -30px -135px;
-            }
+            
         }
     }
 }

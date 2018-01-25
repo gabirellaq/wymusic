@@ -33,6 +33,14 @@
                         <AlbumComponent :albumData="albumDataJson.albums"></AlbumComponent>
                     </div>
                 </div>
+                <div class="wrap">
+                    <div class="containerTitle wrapTitle">
+                        <h4>{{topmvTitle}}</h4>
+                    </div>
+                    <div class="wrapcontent" >
+                        <MVComponent :mvData="personalizedmvJson.result" title="personalized"></MVComponent>
+                    </div>
+                </div>
             </div>
             <div class="containerLeft">
                 <div class="smallTitle">{{hotSingersTitle}}</div>
@@ -46,19 +54,22 @@
     import BannerComponent from '@/components/BannerComponent'
     import AlbumComponent from '@/components/AlbumComponent'
     import SingersComponent from '@/components/SingersComponent'
+    import MVComponent from '@/components/MVComponent'
     export default {
         name:"Recommend",
         components:{
             BannerComponent,
             AlbumComponent,
-            SingersComponent
+            SingersComponent,
+            MVComponent
         },
         data () {
             return {
                 title: '推荐歌单',
                 recommendSongTitle: '热门推荐',
                 topAlbumTitle: '新碟上架',
-                hotSingersTitle: '热门歌手'
+                hotSingersTitle: '热门歌手',
+                topmvTitle:'推荐mv'
             }
         },
         methods: {
@@ -66,7 +77,8 @@
                 'getBannerData',
                 'getRecommendSongsData',
                 'getTopAlbumData',
-                'getHotSingersData'
+                'getHotSingersData',
+                'getpersonlizedMvData'
             ])
         },        
         computed: {
@@ -74,18 +86,16 @@
                 'bannerJson': state => state.banner.banner,
                 'recommendSongJson': state => state.songlist.recommendsong,
                 'albumDataJson': state => state.songlist.topalbum,
-                'hotSingersJson': state => state.singer.hotsingers
+                'hotSingersJson': state => state.singer.hotsingers,
+                'personalizedmvJson': state => state.mv.personalizedmv
             }),
         },
-        mounted() {
-            //bannner
-            this.getBannerData();
-            //推荐歌曲
-            this.getRecommendSongsData({'limit':8});
-            //新碟上架
-            this.getTopAlbumData({'offset':0,'limit':8});
-            //热门歌手
-            this.getHotSingersData({'offset':0, 'limit':8});
+        mounted() {            
+            this.getBannerData();//bannner            
+            this.getRecommendSongsData({'limit':8});//推荐歌曲            
+            this.getTopAlbumData({'offset':0,'limit':8});//新碟上架            
+            this.getHotSingersData({'offset':0, 'limit':8});//热门歌手
+            this.getpersonlizedMvData(); //推荐mv
         },
     }
 </script>

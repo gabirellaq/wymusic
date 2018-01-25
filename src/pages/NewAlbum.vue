@@ -6,7 +6,6 @@
 </template>
 <script>
     import { mapState,mapMutations, mapActions } from 'vuex'
-    import {filter} from '../filter.js'
     import AlbumComponent from '@/components/AlbumComponent'
     export default {
         name:"NewAlbum",

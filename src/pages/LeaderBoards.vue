@@ -39,7 +39,6 @@
 </template>
 <script>
     import { mapState, mapMutations, mapActions } from 'vuex'
-    import filter from '../filter.js'
     import CommentComponent from '@/components/CommentComponent'
     import SongListComponent from '@/components/SongListComponent'
     export default {

@@ -38,7 +38,6 @@
     </div>
 </template>
 <script>
-    import filter from '../filter.js'
     export default {
         name:"LyricComponent",
         props:['lyricData','name'],

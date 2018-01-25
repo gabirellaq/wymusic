@@ -18,7 +18,6 @@
 </template>
 <script>
     import { mapState,mapMutations, mapActions } from 'vuex'
-    import {filter} from '../filter.js'
     import SingersComponent from '@/components/SingersComponent'
     export default {
         name:"Singer",

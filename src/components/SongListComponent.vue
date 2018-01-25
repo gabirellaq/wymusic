@@ -18,7 +18,6 @@
     </div>
 </template>
 <script>
-    import filter from '../filter.js'
     export default {
         name:"SongListComponent",
         props:['songlistData'],

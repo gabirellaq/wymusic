@@ -11,7 +11,6 @@
     </div>
 </template>
 <script>
-    import filter from '../filter.js'
     export default {
         name:"BannerComponent",
         props:['toBanner'],

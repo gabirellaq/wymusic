@@ -45,7 +45,6 @@
 </template>
 <script>
     import { mapState, mapMutations, mapActions } from 'vuex'
-    import {filter} from '../filter.js'
     import CommentComponent from '@/components/CommentComponent'
     import LyricComponent from '@/components/LyricComponent'
     export default {
@@ -64,7 +63,8 @@
                 'getCommentMusicData',
                 'getlyricData',
                 'getSongDetailData',
-                'getSimiSongData'
+                'getSimiSongData',
+                'getMusicUrlData'
             ])
         },
         computed: {
@@ -73,6 +73,7 @@
                 'lyricJson': state => state.songlist.lyric, //歌词
                 'songdetailJson': state => state.songlist.songdetail.songs, //歌曲详情
                 'simisongJson': state => state.songlist.simisong.songs, //相似歌曲
+                'musicurlJson': state => state.songlist.musicurl.data, //音乐url
             })
         },
         mounted(){
@@ -84,7 +85,8 @@
             //歌词
             this.getlyricData({id});  
             //相似歌曲
-            this.getSimiSongData({id});         
+            this.getSimiSongData({id});    
+            this.getMusicUrlData({id}); //音乐url     
         }
     }
 </script>

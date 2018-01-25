@@ -3,8 +3,7 @@
         <div class="commentTitle">{{name}}<span>{{commentData.length}}条</span></div>
         <ul>
             <li v-for="(i,index) in commentData" :key="index">
-                <img v-if="i.user.avatarUrl !== null" :src=" i.user.avatarUrl | filterImg">
-                <img v-else src="http://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg">  
+                <img :src=" i.user.avatarUrl  | fiterAvator | filterImg">
                 <div class="b">
                     <span class="name">{{i.user.nickname}}:</span>
                     <span class="c">{{i.content}}</span>
@@ -14,7 +13,6 @@
     </div>
 </template>
 <script>
-    import filter from '../filter.js'
     export default {
         name:"CommentComponent",
         pagename:"精彩评论",

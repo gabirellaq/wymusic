@@ -10,6 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import "@/assets/css/style.scss"
+import "@/filter.js"
 
 Vue.config.productionTip = false
 

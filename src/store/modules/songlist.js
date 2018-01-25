@@ -16,6 +16,7 @@ export default {
         songlisthighquality:[], //精品歌单
         albumdetail:[], //专辑详情
         albumcomment:[], //专辑评论
+        musicurl:[], //播放音乐url
     },
     mutations: {
         GETSONGS (state, res) {
@@ -59,6 +60,9 @@ export default {
         },
         GETALBUMCOMMENT(state, res){
             state.albumcomment = res
+        },
+        GETMUSICURL(state, res) {
+            state.musicurl = res
         }
     },
     actions: {
@@ -219,6 +223,16 @@ export default {
             })
             if(res) {
                 commit('GETALBUMCOMMENT',res);
+            }
+            return res;
+        },
+        //获取歌曲url 播放音乐
+        async getMusicUrlData ({commit}, {id}) {
+            let res = await axiosRq('GET', '/music/url',{
+                'id':id
+            })
+            if(res) {
+                commit('GETMUSICURL',res);
             }
             return res;
         },

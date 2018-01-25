@@ -2,15 +2,15 @@
     <div id="AlbumDetail" class="area">
         <div class="container">
             <div class="containerRight">
-                <div class="songarea">
-                    <div class="sl" v-if="albumdetailJson">
+                <div class="songarea" v-if="albumdetailJson.album">
+                    <div class="sl">
                         <div class="u-cover">
                             <img :src="albumdetailJson.album.picUrl | filterImg" alt="">
                             <div class="msk"></div>
                         </div>
                     </div>
                     <div class="sr">
-                        <div class="songdetail" v-if="albumdetailJson">
+                        <div class="songdetail">
                             <h3>{{albumdetailJson.album.name}}</h3>
                             <p>歌手:{{albumdetailJson.album.artist.name}}</p>
                             <p>发行公司：{{albumdetailJson.album.company}}</p>
@@ -57,7 +57,6 @@
 </template>
 <script>
     import { mapState, mapMutations, mapActions } from 'vuex'
-    import {filter} from '../filter.js'
     import CommentComponent from '@/components/CommentComponent'
     export default {
         name:"AlbumDetail",

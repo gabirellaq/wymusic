@@ -33,7 +33,7 @@
                 'getSongsData'
             ]),
             get_Songs(order) {
-                this.getSongsData({'order':order});
+                this.getSongsData(order);
             },
         },
         computed: {

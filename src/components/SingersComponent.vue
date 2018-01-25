@@ -3,8 +3,7 @@
         <ul class="searchsingerList" v-if="singersData">
             <li v-for="(itemx,idx) in singersData" :key="idx">
                 <router-link :to="`/artist?id=${itemx.id}&avator=${itemx.picUrl}&name=${itemx.name}`">
-                    <img v-if="itemx.picUrl !== null" :src="itemx.picUrl | filterImg" />
-                    <img v-else src="http://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg">  
+                    <img :src="itemx.picUrl | fiterAvator | filterImg" />
                 </router-link>
                 <router-link :to="`/artist?id=${itemx.id}&avator=${itemx.picUrl}&name=${itemx.name}`">
                     <p>{{itemx.name}}</p>
@@ -14,7 +13,6 @@
     </div>
 </template>
 <script>
-    import filter from '../filter.js'
     export default {
         name:"SingersComponent",
         props:['singersData'],
