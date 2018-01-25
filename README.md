@@ -54,9 +54,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 * 搜索
 
 ## 效果图
-![img](./screenshots/recommend.PNG)
-![img](./screenshots/leaderboards.PNG)
-![img](./screenshots/songlist.PNG)
-![img](./screenshots/radio.PNG)
-![img](./screenshots/singers.PNG)
-![img](./screenshots/album.PNG)
+![img](./screenshots/recommend.png)
+![img](./screenshots/leaderboards.png)
+![img](./screenshots/songlist.png)
+![img](./screenshots/songdetail.png)
+![img](./screenshots/radio.png)
+![img](./screenshots/singers.png)
+![img](./screenshots/album.png)
