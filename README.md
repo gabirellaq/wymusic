@@ -11,7 +11,7 @@ git clone https://github.com/gabirellaq/wymusic.git
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:1314
 npm run dev
 
 # build for production with minification
