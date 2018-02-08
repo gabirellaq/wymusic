@@ -2,11 +2,11 @@
     <div id="Search">
         <el-tabs v-model="SearchModel" type="border-card" @tab-click="handleClick">
             <el-tab-pane v-for="(item, index) in tabList" :key="index" :label="item.label" :name="item.name" :type="item.type">
-                <p class="snote">搜索“{{keywords}}”，找到 <span class="red">{{item.searchResultCount}}</span> 首 {{item.label}}</p>
-                <div v-if="item.type == 1">   
+                <div v-if="item.type == 1 && searchSongs">   
+                    <p class="snote">搜索“{{keywords}}”，找到 <span class="red">{{searchSongs.songCount}}</span> 首 {{item.label}}</p>
                     <!--单曲-->                                  
-                    <ul class="searchList" v-if="item.searchResult.length > 0">
-                        <li v-for="(itemx,idx) in item.searchResult" :key="idx">
+                    <ul class="searchList">
+                        <li v-for="(itemx,idx) in searchSongs.songs" :key="idx">
                             <router-link :to="`/songDetail?id=${itemx.id}`">
                                 <span class="name">{{itemx.name}}</span>
                                 <span>{{itemx.artists[0].name}}</span>
@@ -16,40 +16,47 @@
                         </li>
                     </ul>
                 </div>
-                <div v-if="item.type == 100">
+                <div v-if="item.type == 100 && searchArtists">
                     <!--歌手-->
-                    <SingersComponent :singersData="item.searchResult"></SingersComponent>
+                    <p class="snote">搜索“{{keywords}}”，找到 <span class="red">{{searchArtists.artistCount}}</span> 个 {{item.label}}</p>
+                    <SingersComponent :singersData="searchArtists.artists"></SingersComponent>
                 </div>
-                <div v-if="item.type == 10">
+                <div v-if="item.type == 10 && searchAlbums">
                     <!--专辑-->
-                    <AlbumComponent :albumData="item.searchResult"></AlbumComponent>
+                    <p class="snote">搜索“{{keywords}}”，找到 <span class="red">{{searchAlbums.albumCount}}</span> 个 {{item.label}}</p>
+                    <AlbumComponent :albumData="searchAlbums.albums"></AlbumComponent>
                 </div>
-                <div v-if="item.type == 1004">
+                <div v-if="item.type == 1004 && searchMvs">
                     <!--视频-->
-                    <MVComponent :mvData="item.searchResult" title="search"></MVComponent>
+                    <p class="snote">搜索“{{keywords}}”，找到 <span class="red">{{searchMvs.mvCount}}</span> 个 {{item.label}}</p>
+                    <MVComponent :mvData="searchMvs.mvs" title="search"></MVComponent>
                 </div>
-                <div v-if="item.type == 1006">
+                <div v-if="item.type == 1006 && searchLyric">
                     <!--歌词-->
-                    <LyricComponent :lyricData="item.searchResult" name="search"></LyricComponent>
+                    <p class="snote">搜索“{{keywords}}”，找到 <span class="red">{{searchLyric.songCount}}</span> 首 {{item.label}}</p>
+                    <LyricComponent :lyricData="searchLyric.songs" name="search"></LyricComponent>
                 </div>
-                <div v-if="item.type == 1000">
+                <div v-if="item.type == 1000 && searchPlaylist">
                     <!--歌单-->
-                    <SongsComponent :songsData="item.searchResult"></SongsComponent>
+                    <p class="snote">搜索“{{keywords}}”，找到 <span class="red">{{searchPlaylist.playlistCount}}</span> 个 {{item.label}}</p>
+                    <SongsComponent :songsData="searchPlaylist.playlists"></SongsComponent>
                 </div>
-                <div v-if="item.type == 1009">
+                <div v-if="item.type == 1009 && searchRadio">
                     <!--电台-->
-                    <ul class="searchsingerList audioList" v-if="item.searchResult.length > 0" >
-                        <li v-for="(itemx,idx) in item.searchResult" :key="idx">
+                    <p class="snote">搜索“{{keywords}}”，找到 <span class="red">{{searchRadio.djRadiosCount}}</span> 个 {{item.label}}</p>
+                    <ul class="searchsingerList audioList">
+                        <li v-for="(itemx,idx) in searchRadio.djRadios" :key="idx">
                             <img :src="itemx.dj.avatarUrl">
                             <p>{{itemx.name}}</p>
                             <p>by {{itemx.dj.nickname}}</p>
                         </li>
                     </ul>
                 </div>
-                <div v-if="item.type == 1002">
+                <div v-if="item.type == 1002 && searchUser">
                     <!--用户-->
-                    <ul class="searchList userList" v-if="item.searchResult.length > 0" >
-                        <li v-for="(itemx,idx) in item.searchResult" :key="idx">
+                    <p class="snote">搜索“{{keywords}}”，找到 <span class="red">{{searchUser.userprofileCount}}</span> 个 {{item.label}}</p>
+                    <ul class="searchList userList">
+                        <li v-for="(itemx,idx) in searchUser.userprofiles" :key="idx">
                             <a>
                                 <img :src="itemx.avatarUrl">
                                 <span class="name">
@@ -94,50 +101,34 @@
                         label:'单曲',
                         name:'single',
                         type:1,
-                        searchResult:'',
-                        searchResultCount:''
                     },{
                         label:'歌手',
                         name:'singer',
                         type:100,
-                        searchResult:'',
-                        searchResultCount:''
                     },{
                         label:'专辑',
                         name:'album',
                         type:10,
-                        searchResult:'',
-                        searchResultCount:''
                     },{
                         label:'视频',
                         name:'video',
                         type: 1004,
-                        searchResult:'',
-                        searchResultCount:''
                     },{
                         label:'歌词',
                         name:'lyrics',
                         type:1006,
-                        searchResult:'',
-                        searchResultCount:'' 
                     },{
                         label:'歌单',
                         name:'songs',
                         type:1000,
-                        searchResult:'',
-                        searchResultCount:'' 
                     },{
                         label:'主播电台',
                         name:'audio',
                         type:1009,
-                        searchResult:'',
-                        searchResultCount:''
                     },{
                         label:'用户',
                         name:'user',
                         type:1002,
-                        searchResult:'',
-                        searchResultCount:'' 
                     }
                 ]
             }
@@ -147,45 +138,7 @@
                 'getSearchData'
             ]),
             query(keywords, type, limit) {
-                this.getSearchData({'keywords':keywords, 'type':type, 'limit':limit})
-                    .then(request => {
-                        switch(type) {
-                            case 1: //单曲
-                                this.tabList[0].searchResult = request.result.songs;
-                                this.tabList[0].searchResultCount = request.result.songCount;
-                                break;
-                            case 100: //歌手
-                                this.tabList[1].searchResult = request.result.artists;
-                                this.tabList[1].searchResultCount = request.result.artistCount;
-                                break;
-                            case 10: //专辑
-                                this.tabList[2].searchResult = request.result.albums;
-                                this.tabList[2].searchResultCount = request.result.albumCount;
-                                break;
-                            case 1004: //视频
-                                this.tabList[3].searchResult = request.result.mvs;
-                                this.tabList[3].searchResultCount = request.result.mvCount;
-                                break;
-                            case 1006: //歌词
-                                this.tabList[4].searchResult = request.result.songs;
-                                this.tabList[4].searchResultCount = request.result.songCount;
-                                break;
-                            case 1000: //歌单
-                                this.tabList[5].searchResult = request.result.playlists;
-                                this.tabList[5].searchResultCount = request.result.playlistCount;
-                                break;
-                            case 1009: //主播电台
-                                this.tabList[6].searchResult = request.result.djRadios;
-                                this.tabList[6].searchResultCount = request.result.djRadiosCount;
-                                break;
-                            case 1002: //用户
-                                this.tabList[7].searchResult = request.result.userprofiles;
-                                this.tabList[7].searchResultCount = request.result.userprofileCount;
-                                break;
-                        }   
-                    }).catch(err => {
-                        console.log("query:", err)
-                    })
+                this.getSearchData({'keywords':keywords, 'type':type, 'limit':limit});
             },
             handleClick (tab, event) {
                 this.type = tab.$attrs.type;
@@ -197,6 +150,18 @@
                    this.query(this.keywords, this.type);
                 }
             }
+        },
+        computed: {
+            ...mapState({
+                'searchSongs': state => state.search.search_songs, //单曲
+                'searchArtists': state => state.search.search_artists, //歌手
+                'searchAlbums': state => state.search.search_albums, //专辑
+                'searchMvs': state => state.search.search_mvs, //mv
+                'searchLyric': state => state.search.search_lyric, //歌词
+                'searchPlaylist': state => state.search.search_playlist, //歌单
+                'searchRadio': state => state.search.search_radio, //电台
+                'searchUser': state => state.search.search_user, //用户
+            })
         },
         mounted() {
             this.init();
